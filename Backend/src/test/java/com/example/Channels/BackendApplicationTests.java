@@ -1,10 +1,10 @@
-package com.example.demo;
+package com.example.Channels;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GuideBeApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
