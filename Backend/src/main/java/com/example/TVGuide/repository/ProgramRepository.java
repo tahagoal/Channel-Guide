@@ -1,6 +1,8 @@
 package com.example.TVGuide.repository;
 
 import com.example.TVGuide.dto.ProgramDto;
+import com.example.TVGuide.dto.ScheduleDto;
+import com.example.TVGuide.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,10 +27,18 @@ public interface ProgramRepository extends JpaRepository<com.example.TVGuide.mod
             + "WHERE id =  ?1")
     ProgramDto getProgrambyId(Integer id);
 
-    @Query(value = "SELECT p.name, s.information, s.start_time, s.end_time "+
-            "FROM programs as p left join schedule as s on p.id = s.program_id "+
-            "where p.id = ?1 AND s.end_time >= current_timestamp "+
+
+    /*
+    *
+    *
+    * Retrieve Schedule Details for the next Seven Days
+    *
+    * */
+
+    @Query(value = "SELECT s.start_time AS startTime, s.end_time as endTime,s.shift_minutes as shiftMinutes, cast(s.information as text) "+
+            "FROM programs p LEFT JOIN schedule s on p.id = s.program_id "+
+            "WHERE p.id = ?1 AND s.end_time >= current_timestamp " +
             "AND s.start_time < current_timestamp + INTERVAL '7 day'",
             nativeQuery = true)
-    List<ProgramDto> getProgramDetailsSevenDays(Integer id);
+    List<ScheduleDto> getProgramDetailsSevenDays(Integer id);
 }

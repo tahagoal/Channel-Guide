@@ -1,7 +1,10 @@
 package com.example.TVGuide.controller;
 import com.example.TVGuide.dto.ChannelDto;
 import com.example.TVGuide.dto.ProgramDto;
+import com.example.TVGuide.dto.ProgramSchedulesDto;
+import com.example.TVGuide.dto.ScheduleDto;
 import com.example.TVGuide.model.Programs;
+import com.example.TVGuide.model.Schedule;
 import com.example.TVGuide.repository.ChannelRepository;
 import com.example.TVGuide.repository.ProgramRepository;
 import com.example.TVGuide.repository.ScheduleRepository;
@@ -47,8 +50,14 @@ public class ChannelsController {
     }
 
     @GetMapping("/program/details/{id}")
-    public List<ProgramDto> getProgramDetailsSevenDays(@PathVariable Integer id){
-        return programRepository.getProgramDetailsSevenDays(id);
+    public ProgramSchedulesDto getProgramDetailsSevenDays(@PathVariable Integer id){
+        List<ScheduleDto> schedules = programRepository.getProgramDetailsSevenDays(id);
+        ProgramDto program = programRepository.getProgrambyId(id);
+
+        ProgramSchedulesDto data = new ProgramSchedulesDto();
+        data.program = program.getName();
+        data.schedules = schedules;
+        return (data);
     }
 
     @GetMapping("/programs")
@@ -59,5 +68,10 @@ public class ChannelsController {
     @GetMapping("/schedules")
     public Page<com.example.TVGuide.model.Schedule> getSchedules(Pageable pageable) {
         return scheduleRepository.findAll(pageable);
+    }
+
+    @PostMapping("/schedule/{schedule_id}/shiftMinutes/{minutes}")
+    public void shiftingTime(@PathVariable int schedule_id, @PathVariable int minutes){
+        scheduleRepository.shiftingTime(schedule_id, minutes);
     }
 }
