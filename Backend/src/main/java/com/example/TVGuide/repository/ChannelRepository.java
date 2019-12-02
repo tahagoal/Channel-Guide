@@ -24,7 +24,7 @@ public interface ChannelRepository extends JpaRepository<com.example.TVGuide.mod
 
     @Transactional(readOnly = true)
     @Query(value = "SELECT c.name as cName, s.start_time as startTime, s.end_time as endTime, cast(s.information as text) as sInformation , " +
-            "s.shift_minutes as shiftMinutes, s.id  as Id, p.type as pType FROM " +
+            "s.shift_minutes as shiftMinutes, s.id  as Id, p.type as pType, p.name as pName FROM " +
             "schedule s inner join channels c on c.id = s.channel_id " +
             "inner join programs p on p.id = s.program_id " +
             "WHERE s.start_time < current_timestamp AND s.end_time > current_timestamp ",
