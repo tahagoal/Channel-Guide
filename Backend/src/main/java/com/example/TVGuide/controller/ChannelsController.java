@@ -1,8 +1,5 @@
 package com.example.TVGuide.controller;
-import com.example.TVGuide.dto.ChannelDto;
-import com.example.TVGuide.dto.ProgramDto;
-import com.example.TVGuide.dto.ProgramSchedulesDto;
-import com.example.TVGuide.dto.ScheduleDto;
+import com.example.TVGuide.dto.*;
 import com.example.TVGuide.model.Programs;
 import com.example.TVGuide.model.Schedule;
 import com.example.TVGuide.repository.ChannelRepository;
@@ -73,5 +70,20 @@ public class ChannelsController {
     @PostMapping("/schedule/{schedule_id}/shiftMinutes/{minutes}")
     public void shiftingTime(@PathVariable int schedule_id, @PathVariable int minutes){
         scheduleRepository.shiftingTime(schedule_id, minutes);
+    }
+
+    @GetMapping("/getChannelWithLiveShow")
+    public List<ChannelShowDto> getChannelWithLiveShow(){ return channelRepository.getChannelWithLiveShow(); }
+
+
+    @GetMapping("/channel/details/{id}")
+    public ChannelSchedulesDto getChannelDetailsSevenDays(@PathVariable Integer id){
+        List<ScheduleDto> schedules = channelRepository.getProgramDetailsSevenDays(id);
+        ChannelDto channel = channelRepository.getChannelbyId(id);
+
+        ChannelSchedulesDto data = new ChannelSchedulesDto();
+        data.channel = channel.getName();
+        data.schedules = schedules;
+        return (data);
     }
 }
