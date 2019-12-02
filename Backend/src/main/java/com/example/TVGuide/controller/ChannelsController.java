@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 public class ChannelsController {
-    
+
     @Autowired
     private ChannelRepository channelRepository;
     
@@ -26,26 +26,31 @@ public class ChannelsController {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/channels")
     public Page<com.example.TVGuide.model.Channels> getChannels(Pageable pageable) {
         return channelRepository.findAll(pageable);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/channel-minutes/{minutes}")
     public List<ChannelDto> getChannelsMinutes(@PathVariable Integer minutes){
         return channelRepository.fetchChannelwithMinutes(minutes);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/programs/search/{name}")
     public List<ProgramDto> searchProgramByName(@PathVariable String name){
         return programRepository.searchProgramByName(name);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/program/{id}")
     public ProgramDto getProgramById(@PathVariable Integer id){
         return programRepository.getProgrambyId(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/program/details/{id}")
     public ProgramSchedulesDto getProgramDetailsSevenDays(@PathVariable Integer id){
         List<ScheduleDto> schedules = programRepository.getProgramDetailsSevenDays(id);
@@ -57,16 +62,19 @@ public class ChannelsController {
         return (data);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/programs")
     public Page<com.example.TVGuide.model.Programs> getPrograms(Pageable pageable) {
         return programRepository.findAll(pageable);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/schedules")
     public Page<com.example.TVGuide.model.Schedule> getSchedules(Pageable pageable) {
         return scheduleRepository.findAll(pageable);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/schedule/{schedule_id}/shiftMinutes/{minutes}")
     public void shiftingTime(@PathVariable int schedule_id, @PathVariable int minutes){
         scheduleRepository.shiftingTime(schedule_id, minutes);
@@ -77,6 +85,7 @@ public class ChannelsController {
     public List<ChannelShowDto> getChannelWithLiveShow(){ return channelRepository.getChannelWithLiveShow(); }
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/channel/details/{id}")
     public ChannelSchedulesDto getChannelDetailsSevenDays(@PathVariable Integer id){
         List<ScheduleDto> schedules = channelRepository.getProgramDetailsSevenDays(id);
