@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Footer from './FooterComponent';
+import Home from './HomeComponent';
 
-import { fetchAllChannels } from '../redux/channels'
-import {getChannels, getChannelsPending, getChannelsError} from '../redux/Reducers';
-
-// import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+// import {getChannels, getChannelsPending, getChannelsError} from '../redux/Reducers';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 class Main extends Component {
 
@@ -14,25 +13,37 @@ class Main extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    const {fetchChannels} = this.props;
-    fetchChannels();
-  }
+  // componentDidMount() {
+  //   const {fetchChannels} = this.props;
+  //   console.log({fetchChannels});
+    
+  //   fetchChannels();
+  // }
 
-  shouldComponentRender() {
-    const {pending} = this.props;
-    if(this.pending === false) return false;
-    // more tests
-    return true;
-  }
+  // shouldComponentRender() {
+  //   const {pending} = this.props;
+  //   if(this.pending === false) 
+  //     return false;
+  //   return true;
+  // }
   
 
   render() {
-    const {products, error, pending} = this.props;
-
+    
+    const HomePage = () => {
+      return (
+        <Home/>
+      );
+    };
+    
     return (
-      <div className='channel-list-wrapper'>
-        {/* <ChannelList channels={channels} /> */}
+      <div>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/home" component={HomePage}></Route>
+            {/* <Route exact path="/channel/:id" component={ChannelPage}></Route> */}
+          </Switch>
+          </BrowserRouter>
         <Footer />
       </div>
     );
@@ -40,18 +51,19 @@ class Main extends Component {
 
 }
 
-const mapStateToProps = state => ({
-  error: getChannelsError(state),
-  products: getChannels(state),
-  pending: getChannelsPending(state)
-})
+// const mapStateToProps = state => ({
+//   error: getChannelsError(state),
+//   channels: getChannels(state),
+//   pending: getChannelsPending(state)
+// })
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchChannels: fetchAllChannels
-}, dispatch)
+// const mapDispatchToProps = dispatch => bindActionCreators({
+//   fetchChannels: fetchAllChannels
+// }, dispatch)
 
-// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Main);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Main);
+
+export default Main;

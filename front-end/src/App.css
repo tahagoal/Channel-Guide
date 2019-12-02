@@ -20,3 +20,17 @@
 .App-link {
   color: #09d3ac;
 }
+
+.schedule-card{
+  border: 1px solid gray;
+  border-radius: 20px;
+}
+
+.channel-name{
+  font-size: 25px;
+  color: black;
+}
+
+.border-bottom{
+  border-bottom: 1px solid gray;
+}

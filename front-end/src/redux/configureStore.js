@@ -1,13 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import {channelsReducer} from './Reducers';
+// import {channelsReducer} from './Reducers';
+import { Channels } from './channels';
 
 const middlewares = [thunk];
 
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
-            channelsReducer: channelsReducer
+            channels: Channels
         }),
         applyMiddleware(thunk)
     );
