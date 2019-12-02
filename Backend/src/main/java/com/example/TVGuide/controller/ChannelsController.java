@@ -72,6 +72,7 @@ public class ChannelsController {
         scheduleRepository.shiftingTime(schedule_id, minutes);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getChannelWithLiveShow")
     public List<ChannelShowDto> getChannelWithLiveShow(){ return channelRepository.getChannelWithLiveShow(); }
 
