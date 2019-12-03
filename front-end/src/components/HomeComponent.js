@@ -3,35 +3,17 @@ import { Progress } from "reactstrap";
 import { Loading } from "./LoadingComponent";
 import { fetchAllChannels } from "../redux/ActionCreators";
 import { connect } from "react-redux";
-
-// function RenderChannel({ item, isLoading, errMess }) {
-//     if (isLoading) {
-//         return <Loading />;
-//     } else if (errMess) {
-//         return <h4>{errMess}</h4>;
-//     } else{
-//         const channels = props.channels.map((channel) => {
-//             return (
-//                 <div key={channel.id} className="col-12 col-md-5 m-1">
-//                     {/* <RenderMenuItem dish={dish} /> */}
-//                 </div>
-//             );
-//         });
-//         return channels
-//     }
-// }
+import { Link } from "react-router-dom";
 
 class Home extends Component {
 
     constructor(props) {
         super(props);
-
     }
 
     componentDidMount() {
         this.props.fetchAllChannels();
     }
-
 
     render() {
 
@@ -41,14 +23,15 @@ class Home extends Component {
             } else if (err) {
                 return <h4>{err}</h4>;
             } else if (channels) {
-                console.log(channels);
                 return channels.map((channel) => {
                     return (
                         <div key={channel.id} className="row mt-2 mb-2 p-4 border-bottom">
                             <div className="col-6">
-                                <p className="channel-name">
-                                    {channel.cName}
-                                </p>
+                                <Link to={{pathname: `channel/${channel.id}`}}>
+                                    <p className="channel-name">
+                                        {channel.cName}
+                                    </p>
+                                </Link>
                             </div>
                             <div className="col-6">
                                 <div className="schedule-card p-4">
@@ -75,7 +58,7 @@ class Home extends Component {
         }
 
         return (
-            <div className="row align-items-start">
+            <div className="row align-items-start m-0">
                 <div className="col-12 col-md m-1">
                     <RenderChannel
                         channels={this.props.channels.channels}

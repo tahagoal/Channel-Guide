@@ -3,6 +3,7 @@ import Main from './components/MainComponent';
 import './App.css';
 import { Provider } from 'react-redux';
 import { ConfigureStore } from './redux/configureStore';
+import Footer from './components/FooterComponent';
 
 const store = ConfigureStore();
 
@@ -14,6 +15,7 @@ class App extends Component {
         <div className="App">
           <Main />
         </div>
+        <Footer />
       </Provider>
     );
   }

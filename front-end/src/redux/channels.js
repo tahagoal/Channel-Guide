@@ -1,26 +1,3 @@
-// import {fetchChannels, fetchChannelsPending, fetchChannelsError} from './ActionCreators';
-// import { appConfig } from '../appConfig';
-
-// const api_url = appConfig.apiUrl;
-
-// export const fetchAllChannels = () => {
-//     return dispatch => {
-//         dispatch(fetchChannelsPending());
-//         fetch(api_url + 'getChannelWithLiveShow')
-//         .then(res => res.json())
-//         .then(res => {
-//             if(res.error) {
-//                 throw(res.error);
-//             }
-//             dispatch(fetchChannels(res));
-//             return res;
-//         })
-//         .catch(error => {
-//             dispatch(fetchChannelsError(error));
-//         })
-//     }
-// }
-
 import * as ActionTypes from './ActionTypes';
 
 export const Channels = (state = {
@@ -42,5 +19,3 @@ export const Channels = (state = {
             return state;
     }
 }
-
-// export default fetchAllChannels;

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-function Footer(props) {
+function Footer() {
     return(
-    <div className="footer">
+    <footer className="footer">
         <div className="container">
             <div className="row justify-content-center">             
             </div>
@@ -13,7 +12,7 @@ function Footer(props) {
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
     )
 }
 

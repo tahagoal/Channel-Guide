@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -33,4 +33,14 @@
 
 .border-bottom{
   border-bottom: 1px solid gray;
+}
+
+.footer{
+  position: relative;
+}
+
+.back-home{
+  text-align: left;
+  padding-left: 20px;
+  color: #282c34;
 }

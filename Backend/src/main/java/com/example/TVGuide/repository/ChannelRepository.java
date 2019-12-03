@@ -24,7 +24,7 @@ public interface ChannelRepository extends JpaRepository<com.example.TVGuide.mod
 
     @Transactional(readOnly = true)
     @Query(value = "SELECT c.name as cName, s.start_time as startTime, s.end_time as endTime, cast(s.information as text) as sInformation , " +
-            "s.shift_minutes as shiftMinutes, s.id  as Id, p.type as pType, p.name as pName FROM " +
+            "s.shift_minutes as shiftMinutes, c.id  as Id, p.type as pType, p.name as pName FROM " +
             "schedule s inner join channels c on c.id = s.channel_id " +
             "inner join programs p on p.id = s.program_id " +
             "WHERE s.start_time < current_timestamp AND s.end_time > current_timestamp ",
@@ -49,9 +49,9 @@ public interface ChannelRepository extends JpaRepository<com.example.TVGuide.mod
 
     @Query(value = "SELECT s.start_time AS startTime, s.end_time as endTime,s.shift_minutes as shiftMinutes, " +
             "cast(s.information as text), extract(dow from s.end_time) as dayOrder "+
-            "FROM channels c LEFT JOIN schedule s on c.id = s.program_id "+
-            "WHERE c.id = ?1 AND s.end_time >= current_timestamp " +
-            "AND s.start_time < current_timestamp + INTERVAL '7 day'",
+            "FROM channels c LEFT JOIN schedule s on c.id = s.channel_id "+
+            "WHERE c.id = ?1 AND s.start_time < current_timestamp + INTERVAL '7 day' " +
+            "AND s.end_time > current_timestamp",
             nativeQuery = true)
     List<ScheduleDto> getProgramDetailsSevenDays(Integer id);
 }

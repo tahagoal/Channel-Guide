@@ -37,8 +37,8 @@ public interface ProgramRepository extends JpaRepository<com.example.TVGuide.mod
 
     @Query(value = "SELECT s.start_time AS startTime, s.end_time as endTime,s.shift_minutes as shiftMinutes, cast(s.information as text) "+
             "FROM programs p LEFT JOIN schedule s on p.id = s.program_id "+
-            "WHERE p.id = ?1 AND s.end_time >= current_timestamp " +
-            "AND s.start_time < current_timestamp + INTERVAL '7 day'",
+            "WHERE p.id = ?1 AND s.start_time < current_timestamp + INTERVAL '7 day' " +
+            "AND s.end_time > current_timestamp",
             nativeQuery = true)
     List<ScheduleDto> getProgramDetailsSevenDays(Integer id);
 }
