@@ -1,6 +1,7 @@
 package com.example.TVGuide.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public class Channels {
     private String description;
     private int id;
 //    private List<Schedule> schedules;
+    private Collection<Schedule> schedulesById;
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
@@ -41,16 +43,6 @@ public class Channels {
         this.id = id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Channels channels = (Channels) o;
-        return id == channels.id &&
-                Objects.equals(name, channels.name) &&
-                Objects.equals(description, channels.description);
-    }
-
 //    public void setSchedules(List<Schedule> schedules) {
 //        this.schedules = schedules;
 //    }
@@ -62,7 +54,26 @@ public class Channels {
 //    }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Channels channels = (Channels) o;
+        return id == channels.id &&
+                Objects.equals(name, channels.name) &&
+                Objects.equals(description, channels.description);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(name, description, id);
+    }
+
+    @OneToMany(mappedBy = "channelsByChannelId")
+    public Collection<Schedule> getSchedulesById() {
+        return schedulesById;
+    }
+
+    public void setSchedulesById(Collection<Schedule> schedulesById) {
+        this.schedulesById = schedulesById;
     }
 }

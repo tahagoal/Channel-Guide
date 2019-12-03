@@ -96,4 +96,53 @@ public class ChannelsController {
         data.schedules = schedules;
         return (data);
     }
+
+
+
+    /*
+    *
+    *
+    * For Recording code and APIs
+    *
+    *
+    * */
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/record/schedule/{schedule_id}")
+    public void recordSchedule(@PathVariable int schedule_id){
+        scheduleRepository.recordSchedule(schedule_id);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/record/program/{program_id}")
+    public void recordProgram(@PathVariable int program_id){
+        scheduleRepository.recordProgram(program_id);
+    }
+
+    public void checkSchedulesToBeRecorded(){
+        List<ScheduleDto> scheulesRelatedtoPrograms = scheduleRepository.getSchedulestoRelatedProgram();
+        for (int i=0; i<scheulesRelatedtoPrograms.size(); i++) {
+            scheduleRepository.recordSchedule(scheulesRelatedtoPrograms.get(i).getid());
+        }
+
+        List<ScheduleDto> toBeRecordedSchedules = scheduleRepository.getSchedulesToBeRecorded();
+        for (int i=0; i<toBeRecordedSchedules.size(); i++) {
+            scheduleRepository.startRecording(toBeRecordedSchedules.get(i).getid());
+        }
+        List<ScheduleDto> toBeFinishedSchedules = scheduleRepository.getSchedulesToBeFinished();
+        for (int i=0; i<toBeFinishedSchedules.size(); i++) {
+            scheduleRepository.finishRecording(toBeFinishedSchedules.get(i).getid());
+        }
+    }
+
+
+
+    //Testing functions
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/schedule/test")
+    public void startRecording(){
+        scheduleRepository.recordSchedule(1);
+    }
+
 }

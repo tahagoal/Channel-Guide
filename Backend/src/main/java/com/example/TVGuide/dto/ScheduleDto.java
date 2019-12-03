@@ -12,4 +12,5 @@ public interface ScheduleDto {
     Integer getShiftMinutes();
     String getInformation();
     Integer getdayOrder();
+    Integer getid();
 }

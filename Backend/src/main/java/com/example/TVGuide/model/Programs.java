@@ -1,9 +1,7 @@
 package com.example.TVGuide.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +11,8 @@ public class Programs {
     private String colorCode;
     private String type;
     private int id;
+    private Collection<RecordProgram> recordProgramsById;
+    private Collection<Schedule> schedulesById;
 
     @Basic
     @Column(name = "name", nullable = true, length = -1)
@@ -79,5 +79,23 @@ public class Programs {
     @Override
     public int hashCode() {
         return Objects.hash(name, description, colorCode, type, id);
+    }
+
+    @OneToMany(mappedBy = "programsByProgramId")
+    public Collection<RecordProgram> getRecordProgramsById() {
+        return recordProgramsById;
+    }
+
+    public void setRecordProgramsById(Collection<RecordProgram> recordProgramsById) {
+        this.recordProgramsById = recordProgramsById;
+    }
+
+    @OneToMany(mappedBy = "programsByProgramId")
+    public Collection<Schedule> getSchedulesById() {
+        return schedulesById;
+    }
+
+    public void setSchedulesById(Collection<Schedule> schedulesById) {
+        this.schedulesById = schedulesById;
     }
 }

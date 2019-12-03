@@ -2,6 +2,8 @@ package com.example.TVGuide.model;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,11 +16,17 @@ public class Schedule {
     private int id;
     private Channels channelsByChannelId;
     private Programs programsByProgramId;
+    private Collection<RecordSchedule> recordSchedulesById;
+    private Collection<Recording> recordingsById;
 
     @Basic
     @Column(name = "start_time", nullable = true)
     public Date getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
     public void setStartTime(Date startTime) {
@@ -29,6 +37,10 @@ public class Schedule {
     @Column(name = "end_time", nullable = true)
     public Date getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 
     public void setEndTime(Date endTime) {
@@ -100,5 +112,23 @@ public class Schedule {
 
     public void setProgramsByProgramId(Programs programsByProgramId) {
         this.programsByProgramId = programsByProgramId;
+    }
+
+    @OneToMany(mappedBy = "scheduleByScheduleId")
+    public Collection<RecordSchedule> getRecordSchedulesById() {
+        return recordSchedulesById;
+    }
+
+    public void setRecordSchedulesById(Collection<RecordSchedule> recordSchedulesById) {
+        this.recordSchedulesById = recordSchedulesById;
+    }
+
+    @OneToMany(mappedBy = "scheduleByScheduleId")
+    public Collection<Recording> getRecordingsById() {
+        return recordingsById;
+    }
+
+    public void setRecordingsById(Collection<Recording> recordingsById) {
+        this.recordingsById = recordingsById;
     }
 }
