@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchSingleChannel } from "../redux/ActionCreators";
+import {bindActionCreators} from 'redux';
+import { fetchSingleChannel, recordSchedule } from "../redux/ActionCreators";
 import { Link } from "react-router-dom";
 import SearchComponent from './SearchComponent';
 import ProgressBar from "./ProgressBarComponent";
@@ -10,12 +11,13 @@ class ChannelPage extends Component {
 
     constructor(props) {
         super(props);
+        this.schedule_record = this.schedule_record.bind(this);
     }
 
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    componentDidMount() {
-        this.props.fetchSingleChannel();
+    componentDidMount() {        
+        this.props.fetchSingleChannel(this.props.match.params.id);
     }
 
     groupBy = function (xs, key) {
@@ -23,7 +25,11 @@ class ChannelPage extends Component {
             (rv[x[key]] = rv[x[key]] || []).push(x);
             return rv;
         }, {});
-    };
+    }
+
+    schedule_record(schedule_id){
+        this.props.recordSchedule(schedule_id)
+    }
 
     render() {
         const data = this.props.channel.channel;
@@ -54,7 +60,6 @@ class ChannelPage extends Component {
         }
 
         const ScheduleperDay = ({schedules}) => {
-            console.log(schedules);
             
             return(
                 schedules.map((schedule) => {
@@ -66,6 +71,26 @@ class ChannelPage extends Component {
                             </div>
                             <ScheduleCard
                                 schedule={schedule} />
+                            <div className="col-md-2 info-section">
+                                <div className="row m-0">
+                                    <div className="col-12">
+                                        <i className="fa fa-info-circle" aria-hidden="true"></i>
+                                    </div>
+                                    <div className="col-12">
+                                        <p>More info</p>                                        
+                                    </div>
+                                </div>
+                                <div className="row m-0" onClick={() => { this.schedule_record(schedule.id) }}>
+                                    <div className="col-12">
+                                        <div className="circle-record">
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <p>Record</p>
+                                    </div>
+                                    {/* { schedule.id ? 'Record' : null } */}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     )
@@ -131,13 +156,18 @@ class ChannelPage extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    fetchSingleChannel: () => dispatch(fetchSingleChannel(ownProps.match.params.id))
-})
+const mapDispatchToProps = (dispatch) => {
+    return{ 
+        ...bindActionCreators({ fetchSingleChannel, recordSchedule }, dispatch)
+    }
+    // fetchSingleChannel: () => dispatch(fetchSingleChannel(ownProps.match.params.id)),
+    // recordSchedule: (schedule_id) => dispatch(recordSchedule(schedule_id))
+}
 
 const mapStateToProps = (state) => {
     return {
-        channel: state.channel
+        channel: state.channel,
+        rschedule: state.rschedule
     };
 };
 

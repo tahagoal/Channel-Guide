@@ -61,3 +61,23 @@
 .progress{
   border-radius: 1.25rem !important;
 }
+
+.info-section i{
+  font-size: 20px;
+  display: table;
+  margin: 0 auto;
+}
+
+.info-section p {
+  text-align: center;
+}
+
+.info-section .circle-record{
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background: red;
+  display: table;
+  margin: 0 auto;
+  cursor: pointer;
+}

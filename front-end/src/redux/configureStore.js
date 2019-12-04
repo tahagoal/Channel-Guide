@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { Channels } from './channels';
 import { Channel } from './singleChannel';
 import { Programs } from './programs';
+import { RSchedule } from './recordSchedule';
 
 const middlewares = [thunk];
 
@@ -12,7 +13,8 @@ export const ConfigureStore = () => {
         combineReducers({
             channels: Channels,
             channel: Channel,
-            programs: Programs
+            programs: Programs,
+            rschedule: RSchedule
         }),
         applyMiddleware(thunk)
     );

@@ -119,3 +119,44 @@ export const getPrograms = (channel) => ({
   type: ActionTypes.GET_PROGRAMS,
   payload: channel
 });
+
+
+export const recordSchedule = (schedule_id) => (dispatch) => {
+
+  dispatch(RecordLoading(true));
+
+  return fetch(api_url + `record/schedule/${schedule_id}`,{
+    method: "POST"
+  })
+  .then(response => {
+      // console.log(response);
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          var errmess = new Error(error.message);
+          throw errmess;
+    })
+    .then(response => {alert("Show will be recorded")})
+    .then(channel => dispatch(postsRecord(channel)))
+    .catch(error => dispatch(RecordFailed(error.message)));
+}
+
+export const RecordLoading = () => ({
+  type: ActionTypes.RECORD_LOADING
+});
+
+export const RecordFailed = (err) => ({
+  type: ActionTypes.RECORD_FAILED,
+  payload: err
+});
+
+export const postsRecord = (channel) => ({
+  type: ActionTypes.GET_PROGRAMS,
+  payload: channel
+});
