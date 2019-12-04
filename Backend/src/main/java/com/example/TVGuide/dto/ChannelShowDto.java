@@ -10,5 +10,6 @@ public interface ChannelShowDto {
     Integer getId();
     String getpType();
     String getpName();
+    String getcolorCode();
     Integer getshiftMinutes();
 }

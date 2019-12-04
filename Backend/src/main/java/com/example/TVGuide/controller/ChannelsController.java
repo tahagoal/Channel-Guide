@@ -41,7 +41,7 @@ public class ChannelsController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/programs/search/{name}")
     public List<ProgramDto> searchProgramByName(@PathVariable String name){
-        return programRepository.searchProgramByName(name);
+        return programRepository.searchProgramByName(name, name.toLowerCase());
     }
 
     @CrossOrigin(origins = "http://localhost:3000")

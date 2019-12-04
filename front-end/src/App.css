@@ -44,3 +44,20 @@
   padding-left: 20px;
   color: #282c34;
 }
+
+.suggested-list{
+  position: absolute;
+  width: 50%;
+  top: 40px;
+  box-shadow: rgba(0,0,0,0.16) 0px 0px 10px;
+  z-index: 5;
+}
+.suggested-list li{
+  cursor: pointer;
+}
+.suggested-list li:hover{
+  background: azure;
+}
+.progress{
+  border-radius: 1.25rem !important;
+}

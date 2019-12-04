@@ -23,11 +23,13 @@ public interface ChannelRepository extends JpaRepository<com.example.TVGuide.mod
     List<ChannelDto> fetchChannelwithMinutes(int minutes);
 
     @Transactional(readOnly = true)
-    @Query(value = "SELECT c.name as cName, s.start_time as startTime, s.end_time as endTime, cast(s.information as text) as sInformation , " +
-            "s.shift_minutes as shiftMinutes, c.id  as Id, p.type as pType, p.name as pName FROM " +
+    @Query(value = "SELECT c.name as cName ,(s.start_time + (s.shift_minutes * interval '1 minute')) AS startTime, " +
+            "(s.end_time + (s.shift_minutes * interval '1 minute')) as endTime, cast(s.information as text) as sInformation , " +
+            "s.shift_minutes as shiftMinutes, c.id  as Id, p.type as pType, p.name as pName, p.color_code as colorCode FROM " +
             "schedule s inner join channels c on c.id = s.channel_id " +
             "inner join programs p on p.id = s.program_id " +
-            "WHERE s.start_time < current_timestamp AND s.end_time > current_timestamp ",
+            "WHERE (s.start_time + (s.shift_minutes * interval '1 minute')) < current_timestamp AND " +
+            "(s.end_time + (s.shift_minutes * interval '1 minute')) > current_timestamp ",
             nativeQuery = true)
 
     List<ChannelShowDto> getChannelWithLiveShow();
@@ -47,11 +49,12 @@ public interface ChannelRepository extends JpaRepository<com.example.TVGuide.mod
      *
      */
 
-    @Query(value = "SELECT s.start_time AS startTime, s.end_time as endTime,s.shift_minutes as shiftMinutes, " +
-            "cast(s.information as text), extract(dow from s.end_time) as dayOrder "+
+    @Query(value = "SELECT (s.start_time + (s.shift_minutes * interval '1 minute')) AS startTime, " +
+            "(s.end_time + (s.shift_minutes * interval '1 minute')) as endTime,s.shift_minutes as shiftMinutes, " +
+            "cast(s.information as text), extract(dow from s.end_time) as dayOrder ,s.id as Id "+
             "FROM channels c LEFT JOIN schedule s on c.id = s.channel_id "+
-            "WHERE c.id = ?1 AND s.start_time < current_timestamp + INTERVAL '7 day' " +
-            "AND s.end_time > current_timestamp",
+            "WHERE c.id = ?1 AND (s.start_time + (s.shift_minutes * interval '1 minute')) < current_timestamp + INTERVAL '7 day' " +
+            "AND (s.end_time + (s.shift_minutes * interval '1 minute')) > current_timestamp ORDER By s.start_time asc",
             nativeQuery = true)
     List<ScheduleDto> getProgramDetailsSevenDays(Integer id);
 }

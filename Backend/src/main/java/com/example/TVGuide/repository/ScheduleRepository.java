@@ -60,8 +60,8 @@ public interface ScheduleRepository extends JpaRepository<com.example.TVGuide.mo
     @Query(value = "SELECT s.id " +
             "FROM schedule s RIGHT JOIN record_schedule rs on s.id = rs.schedule_id " +
             "LEFT JOIN recording r on s.id = r.schedule_id "+
-            "WHERE s.end_time >= current_timestamp " +
-            "AND s.start_time < current_timestamp + INTERVAL '7 day' " +
+            "WHERE (s.end_time + (s.shift_minutes * interval '1 minute')) >= current_timestamp " +
+            "AND (s.start_time + (s.shift_minutes * interval '1 minute')) < current_timestamp + INTERVAL '7 day' " +
             "AND r.status IS NULL",
             nativeQuery = true)
     List<ScheduleDto> getSchedulesToBeRecorded();
@@ -69,7 +69,7 @@ public interface ScheduleRepository extends JpaRepository<com.example.TVGuide.mo
     @Query(value = "SELECT s.id " +
             "FROM schedule s RIGHT JOIN record_schedule rs on s.id = rs.schedule_id " +
             "LEFT JOIN recording r on s.id = r.schedule_id "+
-            "WHERE s.end_time < current_timestamp " +
+            "WHERE (s.end_time + (s.shift_minutes * interval '1 minute')) < current_timestamp " +
             "AND r.status = 'recording' ",
             nativeQuery = true)
     List<ScheduleDto> getSchedulesToBeFinished();

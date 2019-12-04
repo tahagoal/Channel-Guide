@@ -13,10 +13,11 @@ import java.util.List;
 @Repository
 public interface ProgramRepository extends JpaRepository<com.example.TVGuide.model.Programs, Long> {
     @Transactional(readOnly = true)
-    @Query(value = "SELECT p.name AS name, p.colorCode AS colorCode, p.id AS id, p.description AS description "
-            + "FROM Programs p "
-            + "WHERE LOWER(p.name) like %?1%")
-    List<ProgramDto> searchProgramByName(String name);
+    @Query(value = "SELECT p.name AS name, p.color_code AS colorCode, p.id AS id, p.description AS description "
+            + "FROM programs p "
+            + "WHERE LOWER(p.name) like %?1% OR LOWER(p.name) like %?2% LIMIT 10",
+    nativeQuery = true)
+    List<ProgramDto> searchProgramByName(String name, String lowerName);
 
     @Query(value = "SELECT p.name AS name, " +
             "p.colorCode AS colorCode, " +
@@ -37,8 +38,8 @@ public interface ProgramRepository extends JpaRepository<com.example.TVGuide.mod
 
     @Query(value = "SELECT s.start_time AS startTime, s.end_time as endTime,s.shift_minutes as shiftMinutes, cast(s.information as text) "+
             "FROM programs p LEFT JOIN schedule s on p.id = s.program_id "+
-            "WHERE p.id = ?1 AND s.start_time < current_timestamp + INTERVAL '7 day' " +
-            "AND s.end_time > current_timestamp",
+            "WHERE p.id = ?1 AND (s.start_time + (s.shift_minutes * interval '1 minute')) < current_timestamp + INTERVAL '7 day' " +
+            "AND (s.end_time + (s.shift_minutes * interval '1 minute')) > current_timestamp",
             nativeQuery = true)
     List<ScheduleDto> getProgramDetailsSevenDays(Integer id);
 }

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Progress } from "reactstrap";
 import { Loading } from "./LoadingComponent";
 import { fetchAllChannels } from "../redux/ActionCreators";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import SearchComponent from "./SearchComponent";
+import ProgressBar from "./ProgressBarComponent";
 
 class Home extends Component {
 
@@ -18,6 +19,7 @@ class Home extends Component {
     render() {
 
         const RenderChannel = ({ channels, pending, err }) => {
+            
             if (pending) {
                 return <Loading />;
             } else if (err) {
@@ -26,14 +28,14 @@ class Home extends Component {
                 return channels.map((channel) => {
                     return (
                         <div key={channel.id} className="row mt-2 mb-2 p-4 border-bottom">
-                            <div className="col-6">
+                            <div className="col-md-6 col-12">
                                 <Link to={{pathname: `channel/${channel.id}`}}>
                                     <p className="channel-name">
                                         {channel.cName}
                                     </p>
                                 </Link>
                             </div>
-                            <div className="col-6">
+                            <div className="col-md-6 col-12">
                                 <div className="schedule-card p-4">
                                     {channel.sInformation}
                                     <div className="mt-4">
@@ -42,7 +44,8 @@ class Home extends Component {
                                                 {new Date(channel.startTime).getHours()}:{(new Date(channel.startTime).getMinutes() == 0 ) ? '00':new Date(channel.startTime).getMinutes()}
                                             </div>
                                             <div className="col-8">
-                                                <Progress value="25" className="mt-1" color="success"/>
+                                                <ProgressBar startTime={channel.startTime} endTime={channel.endTime} />
+                                                {/* <Progress value="25" className="mt-1" color="success"/> */}
                                             </div>
                                             <div className="col-2">
                                                 {new Date(channel.endTime).getHours()}:{(new Date(channel.endTime).getMinutes() == 0 ) ? '00':new Date(channel.endTime).getMinutes()}
@@ -58,13 +61,23 @@ class Home extends Component {
         }
 
         return (
-            <div className="row align-items-start m-0">
-                <div className="col-12 col-md m-1">
-                    <RenderChannel
-                        channels={this.props.channels.channels}
-                        pending={this.props.channels.pending}
-                        error={this.props.channels.err}
-                    />
+            <div className="p-3">
+                <div className="border-bottom row m-0">
+                    <div className="col-8">
+                        <h3>Currently Playing</h3>
+                    </div>
+                    <div className="col-4">
+                        <SearchComponent />
+                    </div>
+                </div>
+                <div className="row m-0">
+                    <div className="col-12 col-md m-1">
+                        <RenderChannel
+                            channels={this.props.channels.channels}
+                            pending={this.props.channels.pending}
+                            error={this.props.channels.err}
+                        />
+                    </div>
                 </div>
             </div>
         );
