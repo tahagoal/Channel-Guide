@@ -10,6 +10,7 @@ This project was created for Pixelogic Media interviewing process
 - Parsing Show information for only these types (Match, Tennis, Series or Movie).
 - The home page has only the channels with the live shows, any channel with non-live shows right now will not be displayed.
 - To access channel details page for any channel, please click on channel name on the home page or type `http://localhost:3000/channel/{id}` 
+- It's recommend to test the system before 10/12/2019 to get live and reliable data.
 
 
 ## Database Design
