@@ -51,8 +51,10 @@ public interface ChannelRepository extends JpaRepository<com.example.TVGuide.mod
 
     @Query(value = "SELECT (s.start_time + (s.shift_minutes * interval '1 minute')) AS startTime, " +
             "(s.end_time + (s.shift_minutes * interval '1 minute')) as endTime,s.shift_minutes as shiftMinutes, " +
-            "cast(s.information as text), extract(dow from s.end_time) as dayOrder ,s.id as Id "+
-            "FROM channels c LEFT JOIN schedule s on c.id = s.channel_id "+
+            "cast(s.information as text), DATE(s.start_time) as dayOrder ,s.id as Id , p.type as pType ," +
+            "p.name as pName, p.id as pId "+
+            "FROM channels c LEFT JOIN schedule s on c.id = s.channel_id " +
+            "LEFT JOIN programs p on p.id = s.program_id "+
             "WHERE c.id = ?1 AND (s.start_time + (s.shift_minutes * interval '1 minute')) < current_timestamp + INTERVAL '7 day' " +
             "AND (s.end_time + (s.shift_minutes * interval '1 minute')) > current_timestamp ORDER By s.start_time asc",
             nativeQuery = true)

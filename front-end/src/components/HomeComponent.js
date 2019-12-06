@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import SearchComponent from "./SearchComponent";
 import ProgressBar from "./ProgressBarComponent";
+import ScheduleInformation from "./ScheduleInfoComponent";
 
 class Home extends Component {
 
@@ -37,7 +38,10 @@ class Home extends Component {
                             </div>
                             <div className="col-md-6 col-12">
                                 <div className="schedule-card p-4">
-                                    {channel.sInformation}
+                                    <ScheduleInformation 
+                                    information={channel.sInformation}
+                                    type={channel.pType} 
+                                    name={channel.pName}/>
                                     <div className="mt-4">
                                         <div className="row m-0">
                                             <div className="col-2">

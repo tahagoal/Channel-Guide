@@ -58,6 +58,9 @@ public class ChannelsController {
 
         ProgramSchedulesDto data = new ProgramSchedulesDto();
         data.program = program.getName();
+        data.program_description = program.getDescription();
+        data.colorCode = program.getColorCode();
+        data.id = program.getId();
         data.schedules = schedules;
         return (data);
     }
@@ -120,15 +123,20 @@ public class ChannelsController {
     }
 
     public void checkSchedulesToBeRecorded(){
+
+        // Put Scheduled show related to specific program in (to be recorded) state
         List<ScheduleDto> scheulesRelatedtoPrograms = scheduleRepository.getSchedulestoRelatedProgram();
         for (int i=0; i<scheulesRelatedtoPrograms.size(); i++) {
             scheduleRepository.recordSchedule(scheulesRelatedtoPrograms.get(i).getid());
         }
 
+        // Check Scheduled shows and start recording them if the start time passed
         List<ScheduleDto> toBeRecordedSchedules = scheduleRepository.getSchedulesToBeRecorded();
         for (int i=0; i<toBeRecordedSchedules.size(); i++) {
             scheduleRepository.startRecording(toBeRecordedSchedules.get(i).getid());
         }
+
+        // Check Scheduled shows and finish them if the end time passed
         List<ScheduleDto> toBeFinishedSchedules = scheduleRepository.getSchedulesToBeFinished();
         for (int i=0; i<toBeFinishedSchedules.size(); i++) {
             scheduleRepository.finishRecording(toBeFinishedSchedules.get(i).getid());

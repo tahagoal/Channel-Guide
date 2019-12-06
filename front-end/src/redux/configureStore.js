@@ -1,12 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-// import {channelsReducer} from './Reducers';
 import { Channels } from './channels';
 import { Channel } from './singleChannel';
 import { Programs } from './programs';
 import { RSchedule } from './recordSchedule';
+import { ProgramDetails } from './programDetails';
 
-const middlewares = [thunk];
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -14,7 +13,8 @@ export const ConfigureStore = () => {
             channels: Channels,
             channel: Channel,
             programs: Programs,
-            rschedule: RSchedule
+            rschedule: RSchedule,
+            programdetails: ProgramDetails
         }),
         applyMiddleware(thunk)
     );

@@ -1,12 +1,31 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Form, FormGroup, ListGroup, ListGroupItem } from "reactstrap";
-import { fetchPrograms } from "../redux/ActionCreators";
+import { bindActionCreators } from 'redux';
+import { Form, FormGroup, ListGroup, ListGroupItem, Modal } from "reactstrap";
+import { fetchPrograms, fetchProgramDetails } from "../redux/ActionCreators";
+import ModalProgram from "./ProgramModal";
 import { Loading } from "./LoadingComponent";
 
 class SearchProgram extends Component {
     state = {
-        query: '',
+        isModalOpen: false,
+        query: ''
+    }
+
+    constructor(props) {
+        super(props);
+        this.program_info = this.program_info.bind(this);
+    }
+
+    toggle() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+
+    program_info(program_id) {
+        this.props.fetchProgramDetails(program_id);
+        this.toggle();
     }
 
     handleInputChange = () => {
@@ -75,8 +94,9 @@ class SearchProgram extends Component {
                         }
                         return (
                             <ListGroupItem key={program.id} style={divStyle} 
-                                style={{ backgroundColor: program.colorCode }}
-                                dangerouslySetInnerHTML={this.getName(program.name)}>
+                                style={{ color: program.colorCode }}
+                                dangerouslySetInnerHTML={this.getName(program.name)}
+                                onClick={() => {this.program_info(program.id)}}>
                             </ListGroupItem>
                         )
                     })
@@ -109,18 +129,34 @@ class SearchProgram extends Component {
                             error={this.props.programs.err} />
                     </ListGroup>
                 </div>
+                <Modal isOpen={this.state.isModalOpen} 
+                toggle={() => { this.toggle() }}
+                size="lg">
+                    <ModalProgram
+                    program={this.props.programdetails.programdetails}
+                    pending={this.props.programdetails.pending}
+                    error={this.props.programdetails.err}
+                    />
+                </Modal>
             </div>
         )
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    fetchPrograms: (name) => dispatch(fetchPrograms(name))
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     fetchPrograms: (name) => dispatch(fetchPrograms(name))
+// })
 
-const mapStateToProps = (state, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        programs: state.programs
+        ...bindActionCreators({ fetchPrograms, fetchProgramDetails }, dispatch)
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        programs: state.programs,
+        programdetails: state.programdetails
     };
 };
 

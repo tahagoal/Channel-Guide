@@ -120,6 +120,37 @@ export const getPrograms = (channel) => ({
   payload: channel
 });
 
+export const recordProgram = (program_id) => (dispatch) => {
+
+  dispatch(RecordLoading(true));
+
+  return fetch(api_url + `record/program/${program_id}`,{
+    method: "POST"
+  })
+  .then(response => {
+      // console.log(response);
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          var errmess = new Error(error.message);
+          throw errmess;
+    })
+    .then(response => {alert("Program will be recorded")})
+    .then(schedule => dispatch(postpRecord(schedule)))
+    .catch(error => dispatch(RecordFailed(error.message)));
+}
+
+export const postpRecord = (channel) => ({
+  type: ActionTypes.RECORD_PROGRAM,
+  payload: channel
+});
+
 
 export const recordSchedule = (schedule_id) => (dispatch) => {
 
@@ -143,7 +174,7 @@ export const recordSchedule = (schedule_id) => (dispatch) => {
           throw errmess;
     })
     .then(response => {alert("Show will be recorded")})
-    .then(channel => dispatch(postsRecord(channel)))
+    .then(schedule => dispatch(postsRecord(schedule)))
     .catch(error => dispatch(RecordFailed(error.message)));
 }
 
@@ -157,6 +188,46 @@ export const RecordFailed = (err) => ({
 });
 
 export const postsRecord = (channel) => ({
-  type: ActionTypes.GET_PROGRAMS,
+  type: ActionTypes.RECORD_SCHEDULE,
   payload: channel
+});
+
+
+
+export const fetchProgramDetails = (id) => (dispatch) => {
+
+  dispatch(programDetailsLoading(true));
+
+  return fetch(api_url + `program/details/${id}`)
+  .then(response => {
+      console.log(response);
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          var errmess = new Error(error.message);
+          throw errmess;
+    })
+  .then(response => response.json())
+  .then(programdetails => dispatch(getProgramDetails(programdetails)))
+  .catch(error => dispatch(programDetailsFailed(error.message)));
+}
+
+export const programDetailsLoading = () => ({
+  type: ActionTypes.PROGRAM_DETAILS_LOADING
+});
+
+export const programDetailsFailed = (err) => ({
+  type: ActionTypes.PROGRAM_DETAILS_FAILED,
+  payload: err
+});
+
+export const getProgramDetails = (programdetails) => ({
+  type: ActionTypes.GET_PROGRAM_DETAILS,
+  payload: programdetails
 });
