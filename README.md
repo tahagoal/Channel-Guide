@@ -13,6 +13,13 @@ This project was created for Pixelogic Media interviewing process
 - It's recommend to test the system before 10/12/2019 to get live and reliable data.
 
 
+## Migration 
+- Please create a database called channel-guide first
+- Please create a schema called public
+- Run the application, it will create the tables and insert the records, the seeders exists here `TVGuide/ScheduledTasks`
+- If the system find just one channel it will not seed any tables, so you can remove the schema and run the system again.
+
+
 ## Database Design
 - You can find the database diagram on db diagram here:
 https://dbdiagram.io/d/5de130cfedf08a25543e8639

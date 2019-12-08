@@ -25,10 +25,6 @@ public class Schedule {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
@@ -37,10 +33,6 @@ public class Schedule {
     @Column(name = "end_time", nullable = true)
     public Date getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
     }
 
     public void setEndTime(Date endTime) {
@@ -68,6 +60,7 @@ public class Schedule {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
